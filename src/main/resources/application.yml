@@ -1,2 +1,11 @@
 
 server.port: 9999
+
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    password: ${H2_PASSWORD:password}
+    username: ${H2_USERNAME:sa}
+    url: ${H2_URL:jdbc:h2:mem:testdb}
+  h2.console.enabled: true
+  jpa.database-platform: org.hibernate.dialect.H2Dialect
