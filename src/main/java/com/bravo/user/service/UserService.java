@@ -19,7 +19,9 @@ public class UserService {
   }
 
   public List<User> retrieveUsers(){
-    LOGGER.info("retrieveUsers");
-    return userRepository.retrieveUsers();
+    List<User> users = userRepository.findAll();
+
+    LOGGER.info("found {} user(s)", users.size());
+    return users;
   }
 }
