@@ -5,10 +5,12 @@ import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
 import com.bravo.user.exception.DataNotFoundException;
 import com.bravo.user.model.UserDto;
+import com.bravo.user.model.UserFilter;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +37,7 @@ public class UserService {
     throw new DataNotFoundException(message);
   }
 
-  public List<UserDto> retrieve(){
+  public List<UserDto> retrieve(final UserFilter filter, final PageRequest pageRequest){
     List<UserDto> users = resourceMapper.convertUsers(userRepository.findAll());
     LOGGER.info("found {} user(s)", users.size());
     return users;
