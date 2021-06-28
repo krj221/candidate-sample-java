@@ -1,12 +1,11 @@
 package com.bravo.user.controller;
 
-import com.bravo.user.dao.model.User;
+import com.bravo.user.model.UserDto;
 import com.bravo.user.service.UserService;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,18 +13,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/user")
 public class UserController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
   private final UserService userService;
 
   public UserController(UserService userService) {
     this.userService = userService;
   }
 
+  @GetMapping(value = "/retrieve/{id}")
+  @ResponseBody
+  public UserDto retrieve(@PathVariable String id){
+    return userService.retrieve(id);
+  }
+
   @GetMapping(value = "/retrieve")
   @ResponseBody
-  public List<User> retrieveUsers(){
-    LOGGER.info("retrieveUsers");
-    return userService.retrieveUsers();
+  public List<UserDto> retrieve(){
+    return userService.retrieve();
   }
 }

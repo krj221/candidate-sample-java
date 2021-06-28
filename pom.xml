@@ -28,6 +28,13 @@
       <scope>runtime</scope>
     </dependency>
 
+    <!-- orika -->
+    <dependency>
+      <groupId>ma.glasnost.orika</groupId>
+      <artifactId>orika-core</artifactId>
+      <version>1.5.4</version>
+    </dependency>
+
     <!-- jUnit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

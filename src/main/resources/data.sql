@@ -1,10 +1,11 @@
 drop table if exists user;
 
 create table user (
-    id varchar(60) PRIMARY KEY,
-    first_name varchar(100) NOT NULL,
-    middle_name varchar(100) NULL,
-    last_name varchar(100) NOT NULL
+    id varchar(60) primary key,
+    first_name varchar(100) not null,
+    middle_name varchar(100) null,
+    last_name varchar(100) not null,
+    updated timestamp not null default current_timestamp()
 );
 
 insert into user (id, first_name, middle_name, last_name) values

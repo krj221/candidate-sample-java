@@ -1,5 +1,6 @@
 package com.bravo.user.dao.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,14 +17,17 @@ public class User {
   @Column(name = "id")
   private String id;
 
-  @Column(name = "first_name")
+  @Column(name = "first_name", nullable = false)
   private String firstName;
 
   @Column(name = "middle_name")
   private String middleName;
 
-  @Column(name = "last_name")
+  @Column(name = "last_name", nullable = false)
   private String lastName;
+
+  @Column(name = "updated", nullable = false)
+  private LocalDateTime updated;
 
   public User(){
     super();
