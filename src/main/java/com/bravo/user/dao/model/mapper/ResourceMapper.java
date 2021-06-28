@@ -1,7 +1,7 @@
 package com.bravo.user.dao.model.mapper;
 
 import com.bravo.user.dao.model.User;
-import com.bravo.user.model.UserDto;
+import com.bravo.user.model.dto.UserDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
