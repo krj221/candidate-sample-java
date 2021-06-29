@@ -2,16 +2,11 @@ package com.bravo.user.dao.specification;
 
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.filter.UserFilter;
-import com.bravo.user.utility.ValidatorUtil;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.springframework.data.jpa.domain.Specification;
 
-public class UserSpecification implements Specification<User> {
+public class UserSpecification extends AbstractSpecification<User> {
 
   private final UserFilter filter;
 
@@ -20,28 +15,18 @@ public class UserSpecification implements Specification<User> {
   }
 
   @Override
-  public Predicate toPredicate(
+  public void doFilter(
       Root<User> root,
       CriteriaQuery<?> criteriaQuery,
-      CriteriaBuilder criteriaBuilder) {
+      CriteriaBuilder criteriaBuilder
+  ){
+    applyInFilter(root.get("id"), filter.getIds());
 
-    List<Predicate> predicates = new ArrayList<>();
-    if(ValidatorUtil.isValid(filter.getIds())){
-      predicates.add(root.get("id").in(filter.getIds()));
-    }
-    if(ValidatorUtil.isValid(filter.getNames())){
-      List<Predicate> namePredicates = new ArrayList<>();
-      namePredicates.add(root.get("firstName").in(filter.getNames()));
-      namePredicates.add(root.get("middleName").in(filter.getNames()));
-      namePredicates.add(root.get("lastName").in(filter.getNames()));
+    final String nameSubQuery = "name";
+    applyStringFilter(root.get("firstName"), filter.getNames(), nameSubQuery);
+    applyStringFilter(root.get("middleName"), filter.getNames(), nameSubQuery);
+    applyStringFilter(root.get("lastName"), filter.getNames(), nameSubQuery);
 
-      predicates.add(criteriaBuilder.or(namePredicates.toArray(new Predicate[0])));
-    }
-    //TODO: DateFilter
-
-    if(predicates.isEmpty()){
-      predicates.add(criteriaBuilder.isNull(root.get("id")));
-    }
-    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+    //TODO: filter.getDateFilter();
   }
 }
