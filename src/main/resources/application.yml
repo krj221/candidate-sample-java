@@ -1,5 +1,5 @@
 
-server.port: 9999
+server.port: ${PORT:9999}
 
 spring:
   datasource:
@@ -8,4 +8,8 @@ spring:
     username: ${H2_USERNAME:sa}
     url: ${H2_URL:jdbc:h2:mem:testdb}
   h2.console.enabled: true
-  jpa.database-platform: org.hibernate.dialect.H2Dialect
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties.hibernate:
+      format_sql: true
+      show_sql: ${SHOW_SQL:true}

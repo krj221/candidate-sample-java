@@ -1,7 +1,9 @@
 package com.bravo.user.config;
 
 import com.bravo.user.annotation.SwaggerController;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -21,6 +23,8 @@ public class SwaggerConfig {
         .apis(RequestHandlerSelectors.withClassAnnotation(SwaggerController.class))
         .paths(PathSelectors.any())
         .build()
-        .directModelSubstitute(LocalDateTime.class, String.class);
+        .directModelSubstitute(LocalDate.class, String.class)
+        .directModelSubstitute(LocalDateTime.class, String.class)
+        .directModelSubstitute(LocalTime.class, String.class);
   }
 }

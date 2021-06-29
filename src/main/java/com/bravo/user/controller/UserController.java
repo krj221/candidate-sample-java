@@ -1,11 +1,14 @@
 package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
+import com.bravo.user.model.dto.ReflectClassDto;
 import com.bravo.user.model.dto.UserDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
+import com.bravo.user.utility.ReflectUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -42,15 +45,16 @@ public class UserController {
       @RequestBody UserFilter filter,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer size,
-      BindingResult errors
+      BindingResult errors,
+      HttpServletResponse httpResponse
   ) throws BindException {
 
     ValidationUtils.invokeValidator(userValidator, filter, errors);
     if(errors.hasErrors()){
       throw new BindException(errors);
     }
-    final int pg = page != null ? page : 0;
-    final int sz = size != null ? size : 20;
-    return userService.retrieve(filter, PageRequest.of(pg, sz));
+    final int pg = page != null && page > 0 ? page - 1 : 0;
+    final int sz = size != null && size > 0 ? size : 20;
+    return userService.retrieve(filter, PageRequest.of(pg, sz), httpResponse);
   }
 }

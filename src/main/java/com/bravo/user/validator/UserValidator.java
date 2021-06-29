@@ -19,14 +19,18 @@ public class UserValidator implements Validator {
 
     UserFilter filter = (UserFilter) o;
 
-    if(ValidatorUtil.isInvalid(filter.getIds())){
-      errors.reject("'ids' are invalid");
+    if(ValidatorUtil.isEmpty(filter)){
+      errors.reject("'filter' is empty");
     }
-    if(ValidatorUtil.isInvalid(filter.getNames())){
-      errors.reject("'names' are invalid");
-    }
-    if(ValidatorUtil.isInvalid(filter.getDateFilter())){
-      errors.reject("'dateFilter' is invalid");
-    }
+
+//    if(ValidatorUtil.isInvalid(filter.getIds())){
+//      errors.reject("'ids' are invalid");
+//    }
+//    else if(ValidatorUtil.isInvalid(filter.getNames())){
+//      errors.reject("'names' are invalid");
+//    }
+//    else if(ValidatorUtil.isInvalid(filter.getDateFilter())){
+//      errors.reject("'dateFilter' is invalid");
+//    }
   }
 }
