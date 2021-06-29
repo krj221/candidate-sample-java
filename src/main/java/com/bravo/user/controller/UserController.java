@@ -5,6 +5,7 @@ import com.bravo.user.model.dto.ReflectClassDto;
 import com.bravo.user.model.dto.UserDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
+import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ReflectUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.List;
@@ -53,8 +54,7 @@ public class UserController {
     if(errors.hasErrors()){
       throw new BindException(errors);
     }
-    final int pg = page != null && page > 0 ? page - 1 : 0;
-    final int sz = size != null && size > 0 ? size : 20;
-    return userService.retrieve(filter, PageRequest.of(pg, sz), httpResponse);
+    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+    return userService.retrieve(filter, pageRequest, httpResponse);
   }
 }

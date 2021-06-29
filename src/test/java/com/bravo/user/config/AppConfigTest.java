@@ -1,6 +1,8 @@
 package com.bravo.user.config;
 
 import com.bravo.user.App;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,5 +26,17 @@ public class AppConfigTest {
     final int expect = 9090;
     final int actual = appConfig.serverPort();
     Assertions.assertEquals(expect, actual);
+  }
+
+  @Test
+  public void objectMapperBuilder(){
+    final ObjectMapper objectMapper = appConfig.objectMapperBuilder().build();
+    Assertions.assertEquals("object mapper clazz", objectMapper.getClass().getName());
+  }
+
+  @Test
+  public void mapperFacade(){
+    final MapperFacade mapperFacade = appConfig.mapperFacade();
+    Assertions.assertEquals("mapper facade clazz", mapperFacade.getClass().getName());
   }
 }

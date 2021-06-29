@@ -11,7 +11,7 @@ public class ValidatorUtil {
 
   public static <T> boolean isEmpty(T value, String... excludeFields){
 
-    final ReflectClassDto reflection = ReflectUtil.describeClass(value);
+    final ReflectClassDto reflection = ReflectUtil.describe(value);
     if(reflection == null){
       throw new IllegalStateException(String.format("could not describe class: '%s'", value));
     }

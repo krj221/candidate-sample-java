@@ -16,7 +16,7 @@ public class ReflectUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtil.class);
 
-  public static ReflectClassDto describeClass(final Object instance){
+  public static ReflectClassDto describe(final Object instance){
 
     final Class<?> instanceClass = instance.getClass();
     BeanInfo beanInfo;

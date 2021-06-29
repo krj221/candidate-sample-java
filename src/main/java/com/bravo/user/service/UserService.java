@@ -7,6 +7,7 @@ import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
 import com.bravo.user.model.dto.UserDto;
 import com.bravo.user.model.filter.UserFilter;
+import com.bravo.user.utility.PageUtil;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
@@ -50,11 +51,7 @@ public class UserService {
     final List<UserDto> users = resourceMapper.convertUsers(userPage.getContent());
     LOGGER.info("found {} user(s)", users.size());
 
-    if(httpResponse != null){
-      httpResponse.setIntHeader("page-count", userPage.getTotalPages());
-      httpResponse.setIntHeader("page-number", pageRequest.getPageNumber() + 1);
-      httpResponse.setIntHeader("page-size", pageRequest.getPageSize());
-    }
+    PageUtil.updatePageHeaders(httpResponse, userPage, pageRequest);
     return users;
   }
 }
