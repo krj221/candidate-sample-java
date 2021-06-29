@@ -51,8 +51,8 @@ public class UserService {
     LOGGER.info("found {} user(s)", users.size());
 
     if(httpResponse != null){
-      httpResponse.setIntHeader("page", pageRequest.getPageNumber() + 1);
       httpResponse.setIntHeader("page-count", userPage.getTotalPages());
+      httpResponse.setIntHeader("page-number", pageRequest.getPageNumber() + 1);
       httpResponse.setIntHeader("page-size", pageRequest.getPageSize());
     }
     return users;
