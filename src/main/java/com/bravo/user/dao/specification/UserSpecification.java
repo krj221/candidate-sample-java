@@ -20,13 +20,12 @@ public class UserSpecification extends AbstractSpecification<User> {
       CriteriaQuery<?> criteriaQuery,
       CriteriaBuilder criteriaBuilder
   ){
+    applyDateTimeFilter(root.get("updated"), filter.getDateFilter());
+
     applyInFilter(root.get("id"), filter.getIds());
 
-    final String nameSubQuery = "name";
-    applyStringFilter(root.get("firstName"), filter.getNames(), nameSubQuery);
-    applyStringFilter(root.get("middleName"), filter.getNames(), nameSubQuery);
-    applyStringFilter(root.get("lastName"), filter.getNames(), nameSubQuery);
-
-    //TODO: filter.getDateFilter();
+    applyStringFilter(root.get("firstName"), filter.getFirstNames());
+    applyStringFilter(root.get("lastName"), filter.getLastNames());
+    applyStringFilter(root.get("middleName"), filter.getMiddleNames());
   }
 }

@@ -1,36 +1,41 @@
 package com.bravo.user.validator;
 
-import com.bravo.user.model.filter.UserFilter;
+import com.bravo.user.exception.BadRequestException;
+import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.utility.ValidatorUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
 
 @Component
-public class UserValidator implements Validator {
+public class UserValidator extends CrudValidator {
 
-  @Override
-  public boolean supports(Class<?> clazz) {
-    return UserFilter.class.equals(clazz);
+  public void validateId(String id){
+    if(ValidatorUtil.isInvalid(id)){
+      throw new BadRequestException("'id' is required");
+    }
   }
 
   @Override
-  public void validate(Object o, Errors errors) {
+  protected void validateCreate(Object o, Errors errors) {
 
-    UserFilter filter = (UserFilter) o;
+    UserSaveDto instance = (UserSaveDto) o;
 
-    if(ValidatorUtil.isEmpty(filter)){
-      errors.reject("'filter' is empty");
+    // required fields
+    if(ValidatorUtil.isInvalid(instance.getFirstName())){
+      errors.reject("'firstName' is required");
     }
+    if(ValidatorUtil.isInvalid(instance.getLastName())){
+      errors.reject("'lastName' is required");
+    }
+  }
 
-//    if(ValidatorUtil.isInvalid(filter.getIds())){
-//      errors.reject("'ids' are invalid");
-//    }
-//    else if(ValidatorUtil.isInvalid(filter.getNames())){
-//      errors.reject("'names' are invalid");
-//    }
-//    else if(ValidatorUtil.isInvalid(filter.getDateFilter())){
-//      errors.reject("'dateFilter' is invalid");
-//    }
+  @Override
+  protected void validateUpdate(Object o, Errors errors) {
+
+    UserSaveDto instance = (UserSaveDto) o;
+
+    if(ValidatorUtil.isEmpty(instance, "id", "updated")){
+      errors.reject("'request' modifiable field(s) are required");
+    }
   }
 }

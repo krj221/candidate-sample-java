@@ -1,11 +1,12 @@
 package com.bravo.user.dao.specification;
 
+import com.bravo.user.model.filter.DateFilter;
 import com.bravo.user.utility.ValidatorUtil;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -16,15 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 public abstract class AbstractSpecification<T> implements Specification<T> {
 
   private CriteriaBuilder criteriaBuilder;
-  private Map<String, List<Predicate>> predicates = new HashMap<>();
-
-
-  abstract void doFilter(
-      Root<T> root,
-      CriteriaQuery<?> criteriaQuery,
-      CriteriaBuilder criteriaBuilder
-  );
-
+  private List<Predicate> predicates;
 
   @Override
   public Predicate toPredicate(
@@ -33,70 +26,70 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
       CriteriaBuilder criteriaBuilder
   ) {
     this.criteriaBuilder = criteriaBuilder;
-    this.predicates = new HashMap<>();
+    this.predicates = new ArrayList<>();
 
     doFilter(root, criteriaQuery, criteriaBuilder);
-    final List<Predicate> rootPredicates = getPredicates();
 
-    // combine sub-queries to the root query as 'or'
-    predicates
-        .entrySet().stream()
-        .filter(entry -> !"root".equals(entry.getKey()))
-        .forEach(entry ->
-            getPredicates().add(criteriaBuilder.or(entry.getValue().toArray(new Predicate[0]))));
-
-    if(rootPredicates.isEmpty()){
-      rootPredicates.add(criteriaBuilder.isNull(root.get("id")));
+    if(predicates.isEmpty()){
+      predicates.add(criteriaBuilder.isNull(root.get("id")));
     }
     return criteriaQuery
         .distinct(true)
-        .where(criteriaBuilder.and(rootPredicates.toArray(new Predicate[0])))
+        .where(criteriaBuilder.and(predicates.toArray(new Predicate[0])))
         .getRestriction();
+  }
+
+  abstract void doFilter(
+      Root<T> root,
+      CriteriaQuery<?> criteriaQuery,
+      CriteriaBuilder criteriaBuilder
+  );
+
+  protected void applyDateTimeFilter(
+      final Expression<LocalDateTime> path,
+      final DateFilter<LocalDateTime> value
+  ){
+    if(ValidatorUtil.isInvalid(value)){
+      return;
+    }
+    final LocalDateTime now = LocalDateTime.now();
+    final LocalDateTime start = value.getStartOrDefault(now.minus(1, ChronoUnit.CENTURIES));
+    final LocalDateTime until = value.getUntilOrDefault(now);
+
+    if(ValidatorUtil.isValid(start)) {
+      predicates.add(criteriaBuilder.between(path, start, until));
+    }
   }
 
   protected <X, Y extends Collection<X>> void applyInFilter(
       final Expression<X> path,
       final Y values
   ){
-    applyInFilter(path, values, null);
-  }
-
-  protected <X, Y extends Collection<X>> void applyInFilter(
-      final Expression<X> path,
-      final Y values,
-      final String query
-  ){
     if(ValidatorUtil.isInvalid(values)){
       return;
     }
-    getPredicates(query).add(path.in(values));
-  }
-
-  protected <X extends Collection<String>> void applyStringFilter(
-      final Expression<String> path,
-      final X values
-  ){
-    applyStringFilter(path, values, null);
+    predicates.add(path.in(values));
   }
 
   protected  <X extends Collection<String>> void applyStringFilter(
       final Expression<String> path,
-      final X values,
-      final String query
+      final X values
   ){
+    if(ValidatorUtil.isInvalid(values)){
+      return;
+    }
     final Expression<String> targetPath = criteriaBuilder.lower(path);
-    final List<Predicate> targetPredicates = getPredicates(query);
     final List<String> inClause = new ArrayList<>();
 
     for(String s : values){
-      final String targetValue = s.toLowerCase();
       final boolean isLike = s.contains("%") || s.contains("*");
       final boolean isNot = s.startsWith("!");
 
       if(!isLike && !isNot){
-        inClause.add(targetValue);
+        inClause.add(s.toLowerCase());
         continue;
       }
+      final String targetValue = (isNot ? s.substring(1) : s).toLowerCase();
       Predicate predicate;
       if(isLike){
         predicate = criteriaBuilder.like(targetPath, targetValue);
@@ -105,25 +98,12 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
       }
 
       if(isNot){
-        // exclude "not" from sub-queries
-        getPredicates().add(criteriaBuilder.or(path.isNull(), criteriaBuilder.not(predicate)));
-      } else {
-        targetPredicates.add(predicate);
+        predicate = criteriaBuilder.not(predicate);
       }
+      predicates.add(predicate);
     }
     if(!inClause.isEmpty()){
-      applyInFilter(targetPath, inClause, query);
+      applyInFilter(targetPath, inClause);
     }
-  }
-
-  private List<Predicate> getPredicates(){
-    return getPredicates("root");
-  }
-
-  private List<Predicate> getPredicates(String query){
-    if(!predicates.containsKey(query)){
-      predicates.put(query, new ArrayList<>());
-    }
-    return predicates.get(query);
   }
 }

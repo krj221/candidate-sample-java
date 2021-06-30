@@ -1,7 +1,7 @@
 package com.bravo.user.dao.model.mapper;
 
 import com.bravo.user.dao.model.User;
-import com.bravo.user.model.dto.UserDto;
+import com.bravo.user.model.dto.UserReadDto;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +17,12 @@ public class ResourceMapper {
     this.mapperFacade = mapperFacade;
   }
 
-  public <T extends Collection<User>> List<UserDto> convertUsers(final T users){
+  public <T extends Collection<User>> List<UserReadDto> convertUsers(final T users){
     return users.stream().map(this::convertUser).collect(Collectors.toList());
   }
 
-  public UserDto convertUser(final User user){
-    final UserDto dto = mapperFacade.map(user, UserDto.class);
+  public UserReadDto convertUser(final User user){
+    final UserReadDto dto = mapperFacade.map(user, UserReadDto.class);
 
     String name;
     if(user.getMiddleName() != null && !user.getMiddleName().trim().isEmpty()){

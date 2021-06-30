@@ -2,6 +2,7 @@ package com.bravo.user.utility;
 
 import com.bravo.user.model.dto.ReflectClassDto;
 import com.bravo.user.model.dto.ReflectFieldDto;
+import com.bravo.user.model.filter.DateFilter;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
@@ -34,6 +35,9 @@ public class ValidatorUtil {
     if(value instanceof Collection<?>){
       isValid = isCollectionValid((Collection<?>)value);
     }
+    else if(value instanceof DateFilter<?>){
+      isValid = isDateFilterValid((DateFilter<?>)value);
+    }
     else if(value instanceof String){
       isValid = isStringValid((String)value);
     }
@@ -44,14 +48,18 @@ public class ValidatorUtil {
   }
 
 
-  private static boolean isCollectionValid(Collection<?> collection){
+  private static boolean isCollectionValid(final Collection<?> collection){
     return !collection.isEmpty() && !collection.stream()
         .map(ValidatorUtil::isValid)
         .collect(Collectors.toSet())
         .contains(false);
   }
 
-  private static boolean isStringValid(String string){
+  private static boolean isDateFilterValid(final DateFilter<?> date){
+    return isValid(date.getStart()) || isValid(date.getUntil());
+  }
+
+  private static boolean isStringValid(final String string){
     return string != null && !string.trim().isEmpty();
   }
 }

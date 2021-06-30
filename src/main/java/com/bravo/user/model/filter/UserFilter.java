@@ -8,6 +8,8 @@ import lombok.Data;
 public class UserFilter {
 
   private Set<String> ids;
-  private Set<String> names;
+  private Set<String> firstNames;
+  private Set<String> lastNames;
+  private Set<String> middleNames;
   private DateFilter<LocalDateTime> dateFilter;
 }

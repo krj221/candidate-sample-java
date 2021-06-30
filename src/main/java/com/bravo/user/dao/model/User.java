@@ -1,5 +1,6 @@
 package com.bravo.user.dao.model;
 
+import com.bravo.user.model.dto.UserSaveDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -32,5 +33,13 @@ public class User {
   public User(){
     super();
     this.id = UUID.randomUUID().toString();
+    this.updated = LocalDateTime.now();
+  }
+
+  public User(final UserSaveDto user){
+    this();
+    this.firstName = user.getFirstName();
+    this.middleName = user.getMiddleName();
+    this.lastName = user.getLastName();
   }
 }
