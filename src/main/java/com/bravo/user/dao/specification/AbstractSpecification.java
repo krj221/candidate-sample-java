@@ -30,9 +30,6 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
 
     doFilter(root, criteriaQuery, criteriaBuilder);
 
-    if(predicates.isEmpty()){
-      predicates.add(criteriaBuilder.isNull(root.get("id")));
-    }
     return criteriaQuery
         .distinct(true)
         .where(criteriaBuilder.and(predicates.toArray(new Predicate[0])))
