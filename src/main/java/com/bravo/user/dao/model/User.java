@@ -27,6 +27,9 @@ public class User {
   @Column(name = "last_name", nullable = false)
   private String lastName;
 
+  @Column(name = "phone_number", nullable = false)
+  private String phoneNumber;
+
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
@@ -41,5 +44,6 @@ public class User {
     this.firstName = user.getFirstName();
     this.middleName = user.getMiddleName();
     this.lastName = user.getLastName();
+    this.phoneNumber = user.getPhoneNumber();
   }
 }
