@@ -8,5 +8,6 @@ public class UserReadDto {
 
   private String id;
   private String name;
+  private String phoneNumber;
   private LocalDateTime updated;
 }
