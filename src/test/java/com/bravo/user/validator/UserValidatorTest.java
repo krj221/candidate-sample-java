@@ -14,42 +14,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserValidatorTest {
 
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateCreateTests.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
 
-    @ParameterizedTest
-    @CsvFileSource(
-            resources = ("/validateCreateTests.csv"),
-            delimiter = '$',
-            lineSeparator = ">"
+  )
+  void validateCreate(@ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
+    Executable method = () -> new UserValidator().validate(Crud.CREATE, userSaveDto,
+        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
 
-    )
-    void validateCreate(@ConvertWith(MapperArgConverter.class)UserSaveDto userSaveDto, boolean isValid) throws BindException {
-         Executable method = ()->new UserValidator().validate(Crud.CREATE,userSaveDto,new BeanPropertyBindingResult(userSaveDto,"userSaveDto"));
-
-         if(isValid){
-             assertDoesNotThrow(method);
-         }else{
-             assertThrows(BindException.class,method);
-         }
-
+    if (isValid) {
+      assertDoesNotThrow(method);
+    } else {
+      assertThrows(BindException.class, method);
     }
+  }
 
-    @ParameterizedTest
-    @CsvFileSource(
-            resources = ("/validateUpdateTests.csv"),
-            delimiter = '$',
-            lineSeparator = ">"
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/validateUpdateTests.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
 
-    )
-    void validateUpdate(@ConvertWith(MapperArgConverter.class)UserSaveDto userSaveDto,boolean isValid) throws BindException {
-        Executable method = ()->new UserValidator().validate(Crud.UPDATE,userSaveDto,new BeanPropertyBindingResult(userSaveDto,"userSaveDto"));
+  )
+  void validateUpdate(@ConvertWith(MapperArgConverter.class) UserSaveDto userSaveDto, boolean isValid) {
+    Executable method = () -> new UserValidator().validate(Crud.UPDATE, userSaveDto,
+        new BeanPropertyBindingResult(userSaveDto, "userSaveDto"));
 
-        if(isValid){
-            assertDoesNotThrow(method);
-        }else{
-            assertThrows(BindException.class,method);
-        }
-
+    if (isValid) {
+      assertDoesNotThrow(method);
+    } else {
+      assertThrows(BindException.class, method);
     }
-
-
+  }
 }

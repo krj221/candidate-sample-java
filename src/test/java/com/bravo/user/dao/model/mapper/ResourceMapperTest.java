@@ -15,15 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceMapperTest {
 
-    @ParameterizedTest
-    @CsvFileSource(
-            resources = ("/convertUserTests.csv"),
-            delimiter = '$',
-            lineSeparator = ">"
+  @ParameterizedTest
+  @CsvFileSource(
+      resources = ("/convertUserTests.csv"),
+      delimiter = '$',
+      lineSeparator = ">"
 
-    )
-    void convertUserTest(@ConvertWith(MapperArgConverter.class) User user, @ConvertWith(MapperArgConverter.class)UserReadDto userReadDto) throws BindException {
-        Assertions.assertEquals(userReadDto,new ResourceMapper(new DefaultMapperFactory.Builder().build().getMapperFacade()).convertUser(user));
-    }
-
+  )
+  void convertUserTest(
+      @ConvertWith(MapperArgConverter.class) User user,
+      @ConvertWith(MapperArgConverter.class) UserReadDto userReadDto) {
+    Assertions.assertEquals(userReadDto, new ResourceMapper(
+        new DefaultMapperFactory.Builder().build().getMapperFacade()).convertUser(user));
+  }
 }

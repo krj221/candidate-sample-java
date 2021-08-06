@@ -10,6 +10,7 @@ import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
@@ -65,15 +66,19 @@ public class UserService {
 
     final Optional<User> optional = userRepository.findById(id);
     final User user = getUser(id, optional);
+    user.setUpdated(LocalDateTime.now());
 
     if(ValidatorUtil.isValid(request.getFirstName())){
       user.setFirstName(request.getFirstName());
     }
     if(ValidatorUtil.isValid(request.getMiddleName())){
-      user.setFirstName(request.getMiddleName());
+      user.setMiddleName(request.getMiddleName());
     }
     if(ValidatorUtil.isValid(request.getLastName())){
-      user.setFirstName(request.getLastName());
+      user.setLastName(request.getLastName());
+    }
+    if(ValidatorUtil.isValid(request.getPhoneNumber())){
+      user.setPhoneNumber(request.getPhoneNumber());
     }
 
     final User updated = userRepository.save(user);
