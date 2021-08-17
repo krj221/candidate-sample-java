@@ -52,3 +52,4 @@ a tool that allows visualization and interaction with APIs [More...](https://swa
 * service - business logic layer
 * utility - helper utility classes
 * validator - validation logic (Spring Validation) [More...](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/validation.html)
+
