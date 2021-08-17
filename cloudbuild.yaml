@@ -1,12 +1,13 @@
+#images: ['gcr.io/candidate-sample-java:$COMMIT_SHA']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/candidate-sample-java:$COMMIT_SHA', '.']
-    timeout: 1000s
+    timeout: 300s
 
-#  - name: 'gcr.io/cloud-builders/docker'
-#    args: ['push', 'gcr.io/candidate-sample-java:$COMMIT_SHA']
-
-images: ['gcr.io/candidate-sample-java:$COMMIT_SHA']
-options:
-  logging: CLOUD_LOGGING_ONLY
-timeout: 1000s
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/candidate-sample-java:$COMMIT_SHA']
+    timeout: 300s
