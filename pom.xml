@@ -28,11 +28,11 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- orika -->
+    <!-- Guava -->
     <dependency>
-      <groupId>ma.glasnost.orika</groupId>
-      <artifactId>orika-core</artifactId>
-      <version>1.5.4</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>23.0</version>
     </dependency>
 
     <!-- Jackson -->
@@ -63,6 +63,13 @@
       <artifactId>lombok</artifactId>
       <version>1.18.20</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- orika -->
+    <dependency>
+      <groupId>ma.glasnost.orika</groupId>
+      <artifactId>orika-core</artifactId>
+      <version>1.5.4</version>
     </dependency>
 
     <!-- Postgres -->
