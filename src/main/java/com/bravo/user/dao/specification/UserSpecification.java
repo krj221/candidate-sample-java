@@ -2,9 +2,12 @@ package com.bravo.user.dao.specification;
 
 import com.bravo.user.dao.model.User;
 import com.bravo.user.model.filter.UserFilter;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.*;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserSpecification extends AbstractSpecification<User> {
 
@@ -27,5 +30,13 @@ public class UserSpecification extends AbstractSpecification<User> {
     applyStringFilter(root.get("firstName"), filter.getFirstNames());
     applyStringFilter(root.get("lastName"), filter.getLastNames());
     applyStringFilter(root.get("middleName"), filter.getMiddleNames());
+
+    if(StringUtils.hasText(filter.getName())){
+      applyStringFilterToFields(Set.of(
+          root.get("firstName"),
+          root.get("lastName"),
+          root.get("middleName")
+      ), filter.getName());
+    }
   }
 }

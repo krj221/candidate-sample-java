@@ -48,6 +48,22 @@ public class UserService {
     return resourceMapper.convertUser(user);
   }
 
+  public List <UserReadDto> retrieveByName(
+      final String name,
+      final PageRequest pageRequest,
+      final HttpServletResponse httpResponse
+  ){
+    final UserSpecification specification = new UserSpecification(UserFilter.builder()
+        .name(name)
+        .build());
+    final Page<User> userPage = userRepository.findAll(specification, pageRequest);
+    final List<UserReadDto> users = resourceMapper.convertUsers(userPage.getContent());
+    LOGGER.info("found {} user(s)", users.size());
+
+    PageUtil.updatePageHeaders(httpResponse, userPage, pageRequest);
+    return users;
+  }
+
   public List<UserReadDto> retrieve(
       final UserFilter filter,
       final PageRequest pageRequest,

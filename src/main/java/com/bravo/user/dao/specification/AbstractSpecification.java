@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -79,28 +80,57 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
     final List<String> inClause = new ArrayList<>();
 
     for(String s : values){
-      final boolean isLike = s.contains("%") || s.contains("*");
-      final boolean isNot = s.startsWith("!");
+      final boolean isLike = isLike(s);
+      final boolean isNot = isNot(s);
 
       if(!isLike && !isNot){
         inClause.add(s.toLowerCase());
         continue;
       }
       final String targetValue = (isNot ? s.substring(1) : s).toLowerCase();
-      Predicate predicate;
-      if(isLike){
-        predicate = criteriaBuilder.like(targetPath, targetValue.replace("*", "%"));
-      } else {
-        predicate = criteriaBuilder.equal(targetPath, targetValue);
-      }
-
-      if(isNot){
-        predicate = criteriaBuilder.not(predicate);
-      }
+      Predicate predicate = createPredicate(targetPath, targetValue, isLike, isNot);
       predicates.add(predicate);
     }
     if(!inClause.isEmpty()){
       applyInFilter(targetPath, inClause);
     }
+  }
+
+  protected void applyStringFilterToFields(Collection<Expression<String>> fields, String value) {
+    final boolean isLike = isLike(value);
+    final boolean isNot = isNot(value);
+
+    final String targetValue = (isNot ? value.substring(1) : value).toLowerCase();
+    Predicate[] filterPredicates = fields.stream().map(field -> createPredicate(field, targetValue, isLike, isNot)).toArray(Predicate[]::new);
+
+    if(isNot){
+      predicates.add(criteriaBuilder.and(filterPredicates));
+    } else {
+      predicates.add(criteriaBuilder.or(filterPredicates));
+    }
+  }
+
+  private boolean isNot(String s) {
+    return s.startsWith("!");
+  }
+
+  private boolean isLike(String s) {
+    return s.contains("%") || s.contains("*");
+  }
+
+  private Predicate createPredicate(Expression<String> path, String targetValue, boolean isLike, boolean isNot) {
+    Predicate predicate;
+
+    Expression<String> targetPath = criteriaBuilder.lower(path);
+    if(isLike){
+      predicate = criteriaBuilder.like(targetPath, targetValue.replace("*", "%"));
+    } else {
+      predicate = criteriaBuilder.equal(targetPath, targetValue);
+    }
+
+    if(isNot){
+      predicate = criteriaBuilder.not(predicate);
+    }
+    return predicate;
   }
 }

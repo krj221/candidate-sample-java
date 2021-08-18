@@ -45,8 +45,22 @@ public class UserController {
 
   @GetMapping(value = "/retrieve/{id}")
   @ResponseBody
-  public UserReadDto retrieve(@PathVariable String id){
+  public UserReadDto retrieve(@PathVariable String id) {
     return userService.retrieve(id);
+  }
+
+  @GetMapping(value = "/retrieve")
+  @ResponseBody
+  public List<UserReadDto> retrieveByName(
+      final @RequestParam String name,
+      final @RequestParam(required = false) Integer page,
+      final @RequestParam(required = false) Integer size,
+      final HttpServletResponse httpResponse
+  ) {
+    // validate name but allow control characters
+    userValidator.validateName(name.replaceAll("[!*%]", ""));
+    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+    return userService.retrieveByName(name, pageRequest, httpResponse);
   }
 
   @PostMapping(value = "/retrieve")
@@ -56,7 +70,7 @@ public class UserController {
       final @RequestParam(required = false) Integer page,
       final @RequestParam(required = false) Integer size,
       final HttpServletResponse httpResponse
-  ){
+  ) {
     final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
     return userService.retrieve(filter, pageRequest, httpResponse);
   }
@@ -75,7 +89,7 @@ public class UserController {
 
   @DeleteMapping(value = "/delete/{id}")
   @ResponseBody
-  public boolean delete(final @PathVariable String id){
+  public boolean delete(final @PathVariable String id) {
     userValidator.validateId(id);
     return userService.delete(id);
   }
