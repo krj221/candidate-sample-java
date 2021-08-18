@@ -3,13 +3,13 @@ server.port: ${PORT:9999}
 
 spring:
   datasource:
-    driverClassName: org.h2.Driver
-    password: ${H2_PASSWORD:password}
-    username: ${H2_USERNAME:sa}
-    url: ${H2_URL:jdbc:h2:mem:testdb}
-  h2.console.enabled: true
+    driverClassName: ${DB_DRIVER:org.h2.Driver}
+    password: ${DB_PASSWORD:password}
+    username: ${DB_USERNAME:sa}
+    url: ${DB_URL:jdbc:h2:mem:testdb}
+  h2.console.enabled: false
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect}
     properties.hibernate:
       format_sql: true
       show_sql: ${SHOW_SQL:true}
