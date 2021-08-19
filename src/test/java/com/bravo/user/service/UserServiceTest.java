@@ -58,4 +58,26 @@ import static org.junit.jupiter.api.Assertions.*;
     assertEquals(20, userReadDtos.size());
   }
 
+  @Test
+  void retrieveNameNoResults() {
+    List<UserReadDto> userReadDtos = userService.retrieveByName("zxy", PageUtil.createPageRequest(null, null), null);
+    assertEquals(0, userReadDtos.size());
+  }
+
+
+  @Test
+  void retrieveNameOnlyControl() {
+    List<UserReadDto> userReadDtos = userService.retrieveByName("!", PageUtil.createPageRequest(null, null), null);
+    assertEquals(20, userReadDtos.size());
+
+    userReadDtos = userService.retrieveByName("%", PageUtil.createPageRequest(null, null), null);
+    assertEquals(20, userReadDtos.size());
+
+    userReadDtos = userService.retrieveByName("*", PageUtil.createPageRequest(null, null), null);
+    assertEquals(20, userReadDtos.size());
+
+  }
+
+
+
 }

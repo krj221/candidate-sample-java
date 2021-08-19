@@ -7,6 +7,7 @@ import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
 import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
+import com.bravo.user.utility.ValidatorUtil;
 import com.bravo.user.validator.UserValidator;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +59,7 @@ public class UserController {
       final HttpServletResponse httpResponse
   ) {
     // validate name but allow control characters
-    userValidator.validateName(name.replaceAll("[!*%]", ""));
+    userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
     final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
     return userService.retrieveByName(name, pageRequest, httpResponse);
   }

@@ -19,7 +19,7 @@ public class UserValidator extends CrudValidator {
     if(ValidatorUtil.isInvalid(name)){
       throw new BadRequestException("'name' is required");
     }
-    if(!name.matches("[A-Za-z]*")){
+    if(!name.matches("^[A-Za-z]+$")){
       throw new BadRequestException("'name' cannot contain numbers, spaces, or special characters");
     }
 

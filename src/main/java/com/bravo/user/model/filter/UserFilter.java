@@ -14,6 +14,5 @@ public class UserFilter {
   private Set<String> firstNames;
   private Set<String> lastNames;
   private Set<String> middleNames;
-  private String name;
   private DateFilter<LocalDateTime> dateFilter;
 }
