@@ -96,6 +96,9 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
   }
 
   protected void applyStringFilterToFields(Collection<Expression<String>> fields, String value) {
+    if(ValidatorUtil.isInvalid(value)){
+      return;
+    }
     final boolean isLike = isLike(value);
     final boolean isNot = isNot(value);
 
