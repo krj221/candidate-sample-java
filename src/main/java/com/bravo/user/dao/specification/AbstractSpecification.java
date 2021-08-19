@@ -88,8 +88,7 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
         continue;
       }
       final String targetValue = (isNot ? s.substring(1) : s).toLowerCase();
-      Predicate predicate = createPredicate(targetPath, targetValue, isLike, isNot);
-      predicates.add(predicate);
+      predicates.add(createPredicate(targetPath, targetValue, isLike, isNot));
     }
     if(!inClause.isEmpty()){
       applyInFilter(targetPath, inClause);
