@@ -2,9 +2,12 @@ package com.bravo.user.model.filter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UserFilter {
 
   private Set<String> ids;
