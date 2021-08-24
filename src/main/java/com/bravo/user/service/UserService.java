@@ -3,11 +3,13 @@ package com.bravo.user.service;
 import com.bravo.user.dao.model.User;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
 import com.bravo.user.dao.repository.UserRepository;
+import com.bravo.user.dao.specification.UserNameFuzzySpecification;
 import com.bravo.user.dao.specification.UserSpecification;
 import com.bravo.user.exception.DataNotFoundException;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
+import com.bravo.user.model.filter.UserNameFuzzyFilter;
 import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
 import java.time.LocalDateTime;
@@ -46,6 +48,22 @@ public class UserService {
 
     LOGGER.info("found user '{}'", id);
     return resourceMapper.convertUser(user);
+  }
+
+  public List <UserReadDto> retrieveByName(
+      final String name,
+      final PageRequest pageRequest,
+      final HttpServletResponse httpResponse
+  ){
+    final UserNameFuzzySpecification specification = new UserNameFuzzySpecification(UserNameFuzzyFilter.builder()
+        .name(name)
+        .build());
+    final Page<User> userPage = userRepository.findAll(specification, pageRequest);
+    final List<UserReadDto> users = resourceMapper.convertUsers(userPage.getContent());
+    LOGGER.info("found {} user(s)", users.size());
+
+    PageUtil.updatePageHeaders(httpResponse, userPage, pageRequest);
+    return users;
   }
 
   public List<UserReadDto> retrieve(

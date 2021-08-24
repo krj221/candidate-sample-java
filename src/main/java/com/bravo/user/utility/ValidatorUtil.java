@@ -62,4 +62,11 @@ public class ValidatorUtil {
   private static boolean isStringValid(final String string){
     return string != null && !string.trim().isEmpty();
   }
+
+  public static String removeControlCharacters(final String string){
+    if(string == null){
+      return null;
+    }
+    return string.replaceAll("[!*%]", "");
+  }
 }

@@ -15,6 +15,16 @@ public class UserValidator extends CrudValidator {
       throw new BadRequestException("'id' is required");
     }
   }
+  public void validateName(String name){
+    if(ValidatorUtil.isInvalid(name)){
+      throw new BadRequestException("'name' is required");
+    }
+    if(!name.matches("^[A-Za-z]+$")){
+      throw new BadRequestException("'name' cannot contain numbers, spaces, or special characters");
+    }
+
+  }
+
 
   @Override
   protected void validateCreate(Object o, Errors errors) {
