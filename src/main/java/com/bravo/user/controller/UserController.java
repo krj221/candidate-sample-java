@@ -2,6 +2,7 @@ package com.bravo.user.controller;
 
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.enumerator.Crud;
+import com.bravo.user.exception.BadRequestException;
 import com.bravo.user.model.dto.UserReadDto;
 import com.bravo.user.model.dto.UserSaveDto;
 import com.bravo.user.model.filter.UserFilter;
@@ -9,6 +10,7 @@ import com.bravo.user.service.UserService;
 import com.bravo.user.utility.PageUtil;
 import com.bravo.user.utility.ValidatorUtil;
 import com.bravo.user.validator.UserValidator;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.PageRequest;
@@ -44,24 +46,27 @@ public class UserController {
     return userService.create(request);
   }
 
-  @GetMapping(value = "/retrieve/{id}")
-  @ResponseBody
-  public UserReadDto retrieve(@PathVariable String id) {
-    return userService.retrieve(id);
-  }
-
   @GetMapping(value = "/retrieve")
   @ResponseBody
-  public List<UserReadDto> retrieveByName(
-      final @RequestParam String name,
+  public List<UserReadDto> retrieve(
+      final @RequestParam(required = false) String id,
+      final @RequestParam(required = false) String name,
       final @RequestParam(required = false) Integer page,
       final @RequestParam(required = false) Integer size,
       final HttpServletResponse httpResponse
   ) {
-    // validate name but allow control characters
-    userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
-    final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-    return userService.retrieveByName(name, pageRequest, httpResponse);
+    if(id != null){
+      userValidator.validateId(id);
+      return Collections.singletonList(userService.retrieve(id));
+    }
+    else if(name != null){
+      userValidator.validateName(ValidatorUtil.removeControlCharacters(name));
+      final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
+      return userService.retrieveByName(name, pageRequest, httpResponse);
+    }
+    else {
+      throw new BadRequestException("'id' or 'name' is required!");
+    }
   }
 
   @PostMapping(value = "/retrieve")
