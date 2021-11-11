@@ -7,7 +7,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Set;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class UserNameFuzzySpecification extends AbstractSpecification<User> {
 
   private final UserNameFuzzyFilter filter;

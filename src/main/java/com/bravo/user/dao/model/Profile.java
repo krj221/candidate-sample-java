@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "address")
-public class Address {
+@Table(name = "profile")
+public class Profile {
 
   @Id
   @Column(name = "id")
@@ -20,25 +20,19 @@ public class Address {
   @Column(name = "user_id", nullable = false)
   private String userId;
 
-  @Column(name = "line1", nullable = false)
-  private String line1;
+  @Column(name = "username", nullable = false, unique = true)
+  private String username;
 
-  @Column(name = "line2")
-  private String line2;
+  @Column(name = "password", nullable = false)
+  private String password;
 
-  @Column(name = "city", nullable = false)
-  private String city;
-
-  @Column(name = "state", nullable = false)
-  private String state;
-
-  @Column(name = "zip", nullable = false)
-  private String zip;
+  @Column(name = "picture_url")
+  private String pictureUrl;
 
   @Column(name = "updated", nullable = false)
   private LocalDateTime updated;
 
-  public Address(){
+  public Profile(){
     super();
     this.id = UUID.randomUUID().toString();
     this.updated = LocalDateTime.now();
