@@ -40,11 +40,15 @@ public class User {
   private LocalDateTime updated;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "id")
   private List<Address> addresses;
 
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id")
+  private List<Payment> payments;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "id")
   private Profile profile;
 
   public User(){
