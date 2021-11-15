@@ -21,6 +21,14 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @Configuration
 public class AppConfig {
 
+  @Value("${encryption.secret.key}")
+  private String secretKey;
+
+  @Bean
+  public String secretKey(){
+    return secretKey;
+  }
+
   @Value("${server.port:8080}")
   private int serverPort;
 

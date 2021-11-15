@@ -1,0 +1,37 @@
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":"test"
+}$false
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":"abc123def"
+}$false
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":"123"
+}$false
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":"12345678910"
+}$false
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":null
+}$true
+>{
+  "firstName":"John",
+  "middleName":"C",
+  "lastName":"Doe",
+  "phoneNumber":"0123456789"
+}$true
+

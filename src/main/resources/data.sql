@@ -1,4 +1,37 @@
-drop table if exists user;
+drop table if exists address cascade;
+drop table if exists payment cascade;
+drop table if exists profile cascade;
+drop table if exists user cascade;
+
+
+create table address (
+    id varchar(60) primary key,
+    user_id varchar(60) not null,
+    line1 varchar(100) not null,
+    line2 varchar(100) null,
+    city varchar(100) not null,
+    state varchar(100) not null,
+    zip varchar(10) not null,
+    updated timestamp not null default current_timestamp()
+);
+
+create table payment (
+    id varchar(60) primary key,
+    user_id varchar(60) not null,
+    card_number varchar(16) not null unique,
+    expiry_month integer not null,
+    expiry_year integer not null,
+    updated timestamp not null default current_timestamp()
+);
+
+create table profile (
+    id varchar(60) primary key,
+    user_id varchar(60) not null,
+    username varchar(60) not null unique,
+    password varchar(60) not null,
+    picture_url varchar(100) not null,
+    updated timestamp not null default current_timestamp()
+);
 
 create table user (
     id varchar(60) primary key,

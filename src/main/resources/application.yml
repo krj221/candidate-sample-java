@@ -1,4 +1,6 @@
 
+encryption.secret.key: ${SECRET_KEY:secret}
+
 server.port: ${PORT:9999}
 
 spring:
