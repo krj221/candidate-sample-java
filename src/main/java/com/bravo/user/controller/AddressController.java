@@ -5,14 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,18 +33,9 @@ public class AddressController {
 		this.userValidator = userValidator;
 	}
 
-	@PostMapping(value = "/create")
-	@ResponseBody
-	public AddressDto create(final @RequestBody AddressDto request, final BindingResult errors)
-			throws BindException {
-		// TODO implement
-		return null;
-	}
-
 	@GetMapping(value = "/retrieve/{userId}")
 	@ResponseBody
 	public List<AddressDto> retrieve(final @PathVariable String userId,
-			final @RequestParam(required = false) Integer id,
 			final @RequestParam(required = false) Integer page,
 			final @RequestParam(required = false) Integer size,
 			final HttpServletResponse httpResponse) {
@@ -59,24 +44,6 @@ public class AddressController {
 		// one-to-many addresses per user, so using pagination
 		final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
 		return addressService.retrieveByUserId(userId, pageRequest, httpResponse);
-
-		// TODO implement searching by id
-
-	}
-
-	@PatchMapping(value = "/update/{id}")
-	@ResponseBody
-	public AddressDto update(final @PathVariable String id, final @RequestBody AddressDto request,
-			final BindingResult errors) throws BindException {
-		// TODO implement
-		return null;
-	}
-
-	@DeleteMapping(value = "/delete/{id}")
-	@ResponseBody
-	public boolean delete(final @PathVariable String id) {
-		// TODO implement
-		return false;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import com.bravo.user.dao.model.Address;
 import com.bravo.user.dao.model.mapper.ResourceMapper;
@@ -15,6 +16,7 @@ import com.bravo.user.dao.repository.AddressRepository;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.utility.PageUtil;
 
+@Service
 public class AddressService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddressService.class);
