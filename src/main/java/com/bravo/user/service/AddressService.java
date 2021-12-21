@@ -21,13 +21,13 @@ public class AddressService {
 
 	public AddressService(AddressRepository addressRepository, ResourceMapper resourceMapper) {
 		this.addressRepository = addressRepository;
-	    this.resourceMapper = resourceMapper;
-	  }
+		this.resourceMapper = resourceMapper;
+	}
 
-		public List<AddressDto> retrieveByUserId(final String userId) {
-			List<Address> addressList = addressRepository.findByUserId(userId);
-			LOGGER.info("found {} address(es)", addressList.size());
+	public List<AddressDto> retrieveByUserId(final String userId) {
+		List<Address> addressList = addressRepository.findByUserId(userId);
+		LOGGER.info("found {} address(es)", addressList.size());
 
-			return resourceMapper.convertAddresses(addressList);
+		return resourceMapper.convertAddresses(addressList);
 	}
 }

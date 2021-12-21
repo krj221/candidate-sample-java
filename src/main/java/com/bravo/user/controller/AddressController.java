@@ -22,8 +22,7 @@ public class AddressController {
 	private final AddressService addressService;
 	private final UserValidator userValidator;
 
-	public AddressController(AddressService addressService,
-			UserValidator userValidator) {
+	public AddressController(AddressService addressService, UserValidator userValidator) {
 		this.addressService = addressService;
 		this.userValidator = userValidator;
 	}
