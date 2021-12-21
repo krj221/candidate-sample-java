@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.service.AddressService;
-import com.bravo.user.utility.PageUtil;
 import com.bravo.user.validator.AddressValidator;
 import com.bravo.user.validator.UserValidator;
 
@@ -40,10 +38,7 @@ public class AddressController {
 			final @RequestParam(required = false) Integer size,
 			final HttpServletResponse httpResponse) {
 		userValidator.validateId(userId);
-
-		// one-to-many addresses per user, so using pagination
-		final PageRequest pageRequest = PageUtil.createPageRequest(page, size);
-		return addressService.retrieveByUserId(userId, pageRequest, httpResponse);
+		return addressService.retrieveByUserId(userId);
 	}
 
 }
