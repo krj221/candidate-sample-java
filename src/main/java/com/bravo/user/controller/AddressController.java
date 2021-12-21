@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bravo.user.annotation.SwaggerController;
 import com.bravo.user.model.dto.AddressDto;
 import com.bravo.user.service.AddressService;
-import com.bravo.user.validator.AddressValidator;
 import com.bravo.user.validator.UserValidator;
 
 @RequestMapping(value = "/address")
@@ -21,13 +20,11 @@ import com.bravo.user.validator.UserValidator;
 public class AddressController {
 
 	private final AddressService addressService;
-	private final AddressValidator addressValidator;
 	private final UserValidator userValidator;
 
-	public AddressController(AddressService addressService, AddressValidator addressValidator,
+	public AddressController(AddressService addressService,
 			UserValidator userValidator) {
 		this.addressService = addressService;
-		this.addressValidator = addressValidator;
 		this.userValidator = userValidator;
 	}
 
