@@ -25,7 +25,7 @@ public class AddressService {
 	}
 
 	public List<AddressDto> retrieveByUserId(final String userId) {
-		List<Address> addressList = addressRepository.findByUserId(userId);
+		final List<Address> addressList = addressRepository.findByUserId(userId);
 		LOGGER.info("found {} address(es)", addressList.size());
 
 		return resourceMapper.convertAddresses(addressList);

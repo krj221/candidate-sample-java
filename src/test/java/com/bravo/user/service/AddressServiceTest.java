@@ -57,7 +57,7 @@ class AddressServiceTest {
 
 	@Test
 	void retrieveByUserId() {
-		String userId = "123a-456b";
+		final String userId = "123a-456b";
 		final List<AddressDto> results = addressService.retrieveByUserId(userId);
 		assertEquals(dtoAddresses, results);
 

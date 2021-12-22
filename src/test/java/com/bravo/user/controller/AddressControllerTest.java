@@ -51,7 +51,7 @@ class AddressControllerTest {
 
 	@Test
 	void getRetrieveByUserId() throws Exception {
-		String userId = "123a-456b";
+		final String userId = "123a-456b";
 
 		when(addressService.retrieveByUserId(anyString())).thenReturn(addresses);
 
@@ -59,8 +59,7 @@ class AddressControllerTest {
 				.andExpect(status().isOk());
 
 		for (int i = 0; i < addresses.size(); i++) {
-			result.andExpect(
-					jsonPath(String.format("$[%d].id", i)).value(addresses.get(i).getId()));
+			result.andExpect(jsonPath(String.format("$[%d].id", i)).value(addresses.get(i).getId()));
 		}
 
 		verify(addressService).retrieveByUserId(userId);
