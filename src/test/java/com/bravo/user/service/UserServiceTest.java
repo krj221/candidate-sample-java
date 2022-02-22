@@ -6,20 +6,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.bravo.user.App;
-import com.bravo.user.dao.model.User;
-import com.bravo.user.dao.model.mapper.ResourceMapper;
-import com.bravo.user.dao.repository.UserRepository;
-import com.bravo.user.dao.specification.UserNameFuzzySpecification;
-import com.bravo.user.dao.specification.UserSpecification;
-import com.bravo.user.model.dto.UserReadDto;
-import com.bravo.user.model.filter.UserNameFuzzyFilter;
-import com.bravo.user.utility.PageUtil;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +22,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.bravo.user.App;
+import com.bravo.user.dao.model.User;
+import com.bravo.user.dao.model.mapper.ResourceMapper;
+import com.bravo.user.dao.repository.UserRepository;
+import com.bravo.user.dao.specification.UserNameFuzzySpecification;
+import com.bravo.user.model.dto.UserReadDto;
+import com.bravo.user.model.filter.UserNameFuzzyFilter;
+import com.bravo.user.utility.PageUtil;
 
 @ContextConfiguration(classes = {App.class})
 @ExtendWith(SpringExtension.class)
@@ -79,9 +80,9 @@ public class UserServiceTest {
     final PageRequest pageRequest = PageUtil.createPageRequest(null, null);
     final List<UserReadDto> results = userService.retrieveByName(input, pageRequest, httpResponse);
     assertEquals(dtoUsers, results);
-    assertEquals(httpResponse.getHeader("page-count"), "9");
-    assertEquals(httpResponse.getHeader("page-number"), "1");
-    assertEquals(httpResponse.getHeader("page-size"), "20");
+	assertEquals("9", httpResponse.getHeader("page-count"));
+	assertEquals("1", httpResponse.getHeader("page-number"));
+	assertEquals("20", httpResponse.getHeader("page-size"));
 
     final UserNameFuzzyFilter filter = new UserNameFuzzyFilter(input);
     final UserNameFuzzySpecification specification = new UserNameFuzzySpecification(filter);
@@ -94,9 +95,9 @@ public class UserServiceTest {
     final PageRequest pageRequest = PageUtil.createPageRequest(2, 5);
     final List<UserReadDto> results = userService.retrieveByName(input, pageRequest, httpResponse);
     assertEquals(dtoUsers, results);
-    assertEquals(httpResponse.getHeader("page-count"), "9");
-    assertEquals(httpResponse.getHeader("page-number"), "2");
-    assertEquals(httpResponse.getHeader("page-size"), "5");
+	assertEquals("9", httpResponse.getHeader("page-count"));
+	assertEquals("2", httpResponse.getHeader("page-number"));
+	assertEquals("5", httpResponse.getHeader("page-size"));
 
     final UserNameFuzzyFilter filter = new UserNameFuzzyFilter(input);
     final UserNameFuzzySpecification specification = new UserNameFuzzySpecification(filter);
